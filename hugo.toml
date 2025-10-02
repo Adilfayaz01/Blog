@@ -1,0 +1,20 @@
+baseURL = 'https://adilfayaz01.github.io/fayasuddin.github.io/'
+languageCode = 'en-us'
+title = 'Blog'
+theme= "PaperMod"
+
+
+[params.homeInfoParams]
+Title = "Hi there wave"
+Content = "Can be Info, links, about..."
+
+[[params.socialIcons]]
+name = "github"
+url = "<link>"
+
+[[params.socialIcons]]
+name = "Youtube"
+url = "<link2>"
+
+
+
