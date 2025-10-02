@@ -16,5 +16,7 @@ url = "<link>"
 name = "Youtube"
 url = "<link2>"
 
-
+[caches]
+  [caches.images]
+    dir = ':cacheDir/images'
 
