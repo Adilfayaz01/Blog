@@ -3,20 +3,23 @@ languageCode = 'en-us'
 title = 'Blog'
 theme= "PaperMod"
 
+[params.profileMode]
+enabled = true
+title = "Mohammed Fayasuddin"
+subtitle = "Cloud Security Engineer"
+imageUrl = "https://cdn.pixabay.com/photo/2021/03/02/01/07/cyberpunk-6061251_960_720.jpg"
+imageTitle = "Action"
+imageWidth = 120
+imageHeight = 120
 
-[params.homeInfoParams]
-Title = "Hi there wave"
-Content = "Can be Info, links, about..."
+  [[params.profileMode.buttons]]
+  name = "Blog"
+  url = "/Blog/posts"
 
-[[params.socialIcons]]
-name = "github"
-url = "<link>"
+  [[params.socialIcons]]
+  name = "Youtube"
+  url = "<link>"
 
-[[params.socialIcons]]
-name = "Youtube"
-url = "<link2>"
-
-[caches]
-  [caches.images]
-    dir = ':cacheDir/images'
-
+  [[params.socialIcons]]
+  name = "Github"
+  url = "<link2>"
