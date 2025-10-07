@@ -70,6 +70,8 @@ Open `azure_graph.html` in your web browser. That's it! You can now explore your
 
 pen `azure_graph.html` in your web browser. That's it! You can now explore your infrastructure visually. Try using the "Controls" panel to filter down to just your Virtual Machines and their associated Network Interfaces, or click on a node to inspect its raw properties in the "Properties" panel on the right.
 
+![Azure Graph][image.png]
+
 ### Beyond a Simple Map: Uncovering Security Insights
 
 The most powerful feature of the CAV is the **"Internet Exposure View."** When you enable this view, a special "Internet" node appears. The tool automatically draws connections from this node to any resource it determines is publicly accessible.
