@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 baseURL = 'https://fayasuddin.blog/'
-=======
-baseURL = 'https://fayasuddin.blog'
->>>>>>> 5256d16 (Added Some modificatios and blog)
 languageCode = 'en-us'
 title = 'Blog'
 theme= "PaperMod"
@@ -26,11 +22,11 @@ imageHeight = 180
 
   [[params.socialIcons]]
   name = "Github"
-  url = "<link2>"
+  url = "https://github.com/Adilfayaz01"
 
   [[params.socialIcons]]
-  name = "Linked"
-  url = "<link2>"
+  name = "Linkedin"
+  url = "https://www.linkedin.com/in/mohammed-fayasuddin-a7035a23b/"
 
 [params]
   env = "production"
