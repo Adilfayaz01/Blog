@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/Blog/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=Blog/livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Stop Overpowered Service Accounts: How to Apply Least Privilege in Google Cloud the Right Way | Blog</title>
+<meta name="keywords" content="">
+<meta name="description" content="
+Introduction: Overprivileged Accounts Are a Hidden Risk
+In Google Cloud, service accounts are the backbone of automation, enabling applications and scripts to interact securely with cloud resources. But when a service account has more privileges than necessary, it becomes a ticking time bomb a single compromised account can lead to data leaks, resource misuse, or lateral movement across your cloud environment.
+This post dives into how to enforce the Principle of Least Privilege (PoLP) for Google Cloud service accounts, with actionable examples and best practices that even experienced cloud architects will find indispensable.">
+<meta name="author" content="Fayasuddin">
+<link rel="canonical" href="http://localhost:1313/Blog/posts/lock_down_gcp_service_accounts_with_least_privilege/">
+<link crossorigin="anonymous" href="/Blog/assets/css/stylesheet.a482bf00fa5c046040ef7973ad5fdf5657890cacb596c93f1382f664ca542074.css" integrity="sha256-pIK/APpcBGBA73lzrV/fVleJDKy1lsk/E4L2ZMpUIHQ=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/Blog/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/Blog/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/Blog/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/Blog/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/Blog/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/Blog/posts/lock_down_gcp_service_accounts_with_least_privilege/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:url" content="http://localhost:1313/Blog/posts/lock_down_gcp_service_accounts_with_least_privilege/">
+  <meta property="og:site_name" content="Blog">
+  <meta property="og:title" content="Stop Overpowered Service Accounts: How to Apply Least Privilege in Google Cloud the Right Way">
+  <meta property="og:description" content=" Introduction: Overprivileged Accounts Are a Hidden Risk In Google Cloud, service accounts are the backbone of automation, enabling applications and scripts to interact securely with cloud resources. But when a service account has more privileges than necessary, it becomes a ticking time bomb a single compromised account can lead to data leaks, resource misuse, or lateral movement across your cloud environment.
+This post dives into how to enforce the Principle of Least Privilege (PoLP) for Google Cloud service accounts, with actionable examples and best practices that even experienced cloud architects will find indispensable.">
+  <meta property="og:locale" content="en-us">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-10-05T20:29:21+05:30">
+    <meta property="article:modified_time" content="2025-10-05T20:29:21+05:30">
+    <meta property="og:image" content="https://cdn.pixabay.com/photo/2014/09/02/15/28/styggkarret-433688_960_720.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.pixabay.com/photo/2014/09/02/15/28/styggkarret-433688_960_720.jpg">
+<meta name="twitter:title" content="Stop Overpowered Service Accounts: How to Apply Least Privilege in Google Cloud the Right Way">
+<meta name="twitter:description" content="
+Introduction: Overprivileged Accounts Are a Hidden Risk
+In Google Cloud, service accounts are the backbone of automation, enabling applications and scripts to interact securely with cloud resources. But when a service account has more privileges than necessary, it becomes a ticking time bomb a single compromised account can lead to data leaks, resource misuse, or lateral movement across your cloud environment.
+This post dives into how to enforce the Principle of Least Privilege (PoLP) for Google Cloud service accounts, with actionable examples and best practices that even experienced cloud architects will find indispensable.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "http://localhost:1313/Blog/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Stop Overpowered Service Accounts: How to Apply Least Privilege in Google Cloud the Right Way",
+      "item": "http://localhost:1313/Blog/posts/lock_down_gcp_service_accounts_with_least_privilege/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Stop Overpowered Service Accounts: How to Apply Least Privilege in Google Cloud the Right Way",
+  "name": "Stop Overpowered Service Accounts: How to Apply Least Privilege in Google Cloud the Right Way",
+  "description": " Introduction: Overprivileged Accounts Are a Hidden Risk In Google Cloud, service accounts are the backbone of automation, enabling applications and scripts to interact securely with cloud resources. But when a service account has more privileges than necessary, it becomes a ticking time bomb a single compromised account can lead to data leaks, resource misuse, or lateral movement across your cloud environment.\nThis post dives into how to enforce the Principle of Least Privilege (PoLP) for Google Cloud service accounts, with actionable examples and best practices that even experienced cloud architects will find indispensable.\n",
+  "keywords": [
+    
+  ],
+  "articleBody": " Introduction: Overprivileged Accounts Are a Hidden Risk In Google Cloud, service accounts are the backbone of automation, enabling applications and scripts to interact securely with cloud resources. But when a service account has more privileges than necessary, it becomes a ticking time bomb a single compromised account can lead to data leaks, resource misuse, or lateral movement across your cloud environment.\nThis post dives into how to enforce the Principle of Least Privilege (PoLP) for Google Cloud service accounts, with actionable examples and best practices that even experienced cloud architects will find indispensable.\nUnderstand Your Service Accounts: Inventory Before Action Before you can lock down privileges, you need to know what exists. Start by listing all service accounts in your project:\ngcloud iam service-accounts list --project PROJECT_ID Document their roles, usage patterns, and dependencies. Avoid making assumptions; a service account might be powering a production app or a rarely used script. Tools like Cloud Asset Inventory can help you map which accounts access which resources, giving you a clear picture of potential overprivilege.\nReference: GCP Cloud Asset Inventory\nApply Least Privilege: Only Grant What’s Needed Once you have an inventory, the next step is role assignment hygiene:\nUse Predefined Roles Instead of Owner\nAvoid giving roles like roles/editor or roles/owner unless absolutely necessary. Instead, choose the least-privileged predefined role that allows the service account to perform its tasks. For example: gcloud projects add-iam-policy-binding PROJECT_ID \\ --member=\"serviceAccount:my-service-account@PROJECT_ID.iam.gserviceaccount.com\" \\ --role=\"roles/storage.objectViewer\" Create Custom Roles When Needed\nIf no predefined role fits, create a custom role with only the exact permissions your workload requires: gcloud iam roles create CustomStorageViewer \\ --project=PROJECT_ID \\ --permissions=\"storage.objects.get,storage.objects.list\" \\ --title=\"Custom Storage Viewer\" Follow the Principle of Temporary Privileges\nWhenever possible, assign short-lived credentials using Workload Identity Federation or impersonation: gcloud iam service-accounts keys create key.json \\ --iam-account=SERVICE_ACCOUNT_EMAIL Rotate keys frequently and remove old ones immediately.\nReference: GCP IAM Best Practices\nAudit and Monitor Service Accounts Continuously Implementing PoLP isn’t a one-time effort. Continuous auditing ensures that privileges don’t creep back over time:\nEnable Cloud Audit Logs for all service accounts to track which resources are accessed.\nSet up alerts for unusual privilege escalations or API calls.\nUse Access Transparency and Access Approval for sensitive projects.\nAutomation can help tools like GCP Security Command Center provide automated checks against overprivileged accounts.\nReference: GCP Security Command Center\nDecommission Unused Service Accounts Every service account that isn’t actively used is a security liability. Regularly review and delete or disable accounts no longer needed:\ngcloud iam service-accounts delete my-unused-sa@PROJECT_ID.iam.gserviceaccount.com Maintain a decommissioning policy so that orphaned accounts don’t accumulate silently.\nConclusion: Least Privilege Isn’t Optional Overprivileged service accounts are a silent vulnerability in any Google Cloud environment. By maintaining an inventory, assigning least-privileged roles, monitoring continuously, and decommissioning unused accounts, you drastically reduce your attack surface and enforce security hygiene at scale.\nQuestion for Readers: How do you currently enforce least privilege for service accounts in your environment, and what challenges have you faced?\n",
+  "wordCount" : "491",
+  "inLanguage": "en",
+  "image":"https://cdn.pixabay.com/photo/2014/09/02/15/28/styggkarret-433688_960_720.jpg","datePublished": "2025-10-05T20:29:21+05:30",
+  "dateModified": "2025-10-05T20:29:21+05:30",
+  "author":{
+    "@type": "Person",
+    "name": "Fayasuddin"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/Blog/posts/lock_down_gcp_service_accounts_with_least_privilege/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/Blog/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/Blog/" accesskey="h" title="Blog (Alt + H)">Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Stop Overpowered Service Accounts: How to Apply Least Privilege in Google Cloud the Right Way
+    </h1>
+    <div class="post-meta"><span title='2025-10-05 20:29:21 +0530 IST'>October 5, 2025</span>&nbsp;·&nbsp;<span>3 min</span>&nbsp;·&nbsp;<span>Fayasuddin</span>
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#introduction-overprivileged-accounts-are-a-hidden-risk" aria-label="Introduction: Overprivileged Accounts Are a Hidden Risk">Introduction: Overprivileged Accounts Are a Hidden Risk</a></li>
+                <li>
+                    <a href="#understand-your-service-accounts-inventory-before-action" aria-label="Understand Your Service Accounts: Inventory Before Action">Understand Your Service Accounts: Inventory Before Action</a></li>
+                <li>
+                    <a href="#apply-least-privilege-only-grant-whats-needed" aria-label="Apply Least Privilege: Only Grant What’s Needed">Apply Least Privilege: Only Grant What’s Needed</a></li>
+                <li>
+                    <a href="#audit-and-monitor-service-accounts-continuously" aria-label="Audit and Monitor Service Accounts Continuously">Audit and Monitor Service Accounts Continuously</a></li>
+                <li>
+                    <a href="#decommission-unused-service-accounts" aria-label="Decommission Unused Service Accounts">Decommission Unused Service Accounts</a></li>
+                <li>
+                    <a href="#conclusion-least-privilege-isnt-optional" aria-label="Conclusion: Least Privilege Isn’t Optional">Conclusion: Least Privilege Isn’t Optional</a>
+                </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><h1></h1>
+<h2 id="introduction-overprivileged-accounts-are-a-hidden-risk">Introduction: Overprivileged Accounts Are a Hidden Risk<a hidden class="anchor" aria-hidden="true" href="#introduction-overprivileged-accounts-are-a-hidden-risk">#</a></h2>
+<p>In Google Cloud, service accounts are the backbone of automation, enabling applications and scripts to interact securely with cloud resources. But when a service account has <strong>more privileges than necessary</strong>, it becomes a ticking time bomb a single compromised account can lead to data leaks, resource misuse, or lateral movement across your cloud environment.</p>
+<p>This post dives into <strong>how to enforce the Principle of Least Privilege (PoLP) for Google Cloud service accounts</strong>, with actionable examples and best practices that even experienced cloud architects will find indispensable.</p>
+<h2 id="understand-your-service-accounts-inventory-before-action">Understand Your Service Accounts: Inventory Before Action<a hidden class="anchor" aria-hidden="true" href="#understand-your-service-accounts-inventory-before-action">#</a></h2>
+<p>Before you can lock down privileges, you need to know what exists. Start by listing all service accounts in your project:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>gcloud iam service-accounts list --project PROJECT_ID
+</span></span></code></pre></div><p>Document their roles, usage patterns, and dependencies. Avoid making assumptions; <strong>a service account might be powering a production app or a rarely used script</strong>. Tools like <strong>Cloud Asset Inventory</strong> can help you map which accounts access which resources, giving you a clear picture of potential overprivilege.</p>
+<blockquote>
+<p>Reference: <a href="https://cloud.google.com/asset-inventory/docs/overview">GCP Cloud Asset Inventory</a></p></blockquote>
+<h2 id="apply-least-privilege-only-grant-whats-needed">Apply Least Privilege: Only Grant What’s Needed<a hidden class="anchor" aria-hidden="true" href="#apply-least-privilege-only-grant-whats-needed">#</a></h2>
+<p>Once you have an inventory, the next step is <strong>role assignment hygiene</strong>:</p>
+<ol>
+<li><strong>Use Predefined Roles Instead of Owner</strong><br>
+Avoid giving roles like <code>roles/editor</code> or <code>roles/owner</code> unless absolutely necessary. Instead, choose the <strong>least-privileged predefined role</strong> that allows the service account to perform its tasks. For example:</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>gcloud projects add-iam-policy-binding PROJECT_ID <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --member<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;serviceAccount:my-service-account@PROJECT_ID.iam.gserviceaccount.com&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --role<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;roles/storage.objectViewer&#34;</span>
+</span></span></code></pre></div><ol start="2">
+<li><strong>Create Custom Roles When Needed</strong><br>
+If no predefined role fits, create a <strong>custom role</strong> with only the exact permissions your workload requires:</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>gcloud iam roles create CustomStorageViewer <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --project<span style="color:#f92672">=</span>PROJECT_ID <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --permissions<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;storage.objects.get,storage.objects.list&#34;</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --title<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Custom Storage Viewer&#34;</span>
+</span></span></code></pre></div><ol start="3">
+<li><strong>Follow the Principle of Temporary Privileges</strong><br>
+Whenever possible, assign <strong>short-lived credentials</strong> using Workload Identity Federation or impersonation:</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>gcloud iam service-accounts keys create key.json <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --iam-account<span style="color:#f92672">=</span>SERVICE_ACCOUNT_EMAIL
+</span></span></code></pre></div><p>Rotate keys frequently and remove old ones immediately.</p>
+<blockquote>
+<p>Reference: <a href="https://cloud.google.com/iam/docs/best-practices">GCP IAM Best Practices</a></p></blockquote>
+<h2 id="audit-and-monitor-service-accounts-continuously">Audit and Monitor Service Accounts Continuously<a hidden class="anchor" aria-hidden="true" href="#audit-and-monitor-service-accounts-continuously">#</a></h2>
+<p>Implementing PoLP isn’t a one-time effort. Continuous auditing ensures that privileges don’t creep back over time:</p>
+<ul>
+<li>
+<p><strong>Enable Cloud Audit Logs</strong> for all service accounts to track which resources are accessed.</p>
+</li>
+<li>
+<p><strong>Set up alerts</strong> for unusual privilege escalations or API calls.</p>
+</li>
+<li>
+<p><strong>Use Access Transparency and Access Approval</strong> for sensitive projects.</p>
+</li>
+</ul>
+<p>Automation can help tools like <strong>GCP Security Command Center</strong> provide automated checks against overprivileged accounts.</p>
+<blockquote>
+<p>Reference: <a href="https://cloud.google.com/security-command-center">GCP Security Command Center</a></p></blockquote>
+<h2 id="decommission-unused-service-accounts">Decommission Unused Service Accounts<a hidden class="anchor" aria-hidden="true" href="#decommission-unused-service-accounts">#</a></h2>
+<p>Every service account that isn’t actively used is a <strong>security liability</strong>. Regularly review and delete or disable accounts no longer needed:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>gcloud iam service-accounts delete my-unused-sa@PROJECT_ID.iam.gserviceaccount.com
+</span></span></code></pre></div><p>Maintain a <strong>decommissioning policy</strong> so that orphaned accounts don’t accumulate silently.</p>
+<h2 id="conclusion-least-privilege-isnt-optional">Conclusion: Least Privilege Isn’t Optional<a hidden class="anchor" aria-hidden="true" href="#conclusion-least-privilege-isnt-optional">#</a></h2>
+<p>Overprivileged service accounts are a silent vulnerability in any Google Cloud environment. By maintaining an <strong>inventory, assigning least-privileged roles, monitoring continuously, and decommissioning unused accounts</strong>, you drastically reduce your attack surface and enforce security hygiene at scale.</p>
+<p><strong>Question for Readers:</strong> How do you currently enforce least privilege for service accounts in your environment, and what challenges have you faced?</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2025 <a href="http://localhost:1313/Blog/">Blog</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

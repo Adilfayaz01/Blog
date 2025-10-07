@@ -3,16 +3,16 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>http://localhost:1313/Blog/</loc>
-    <lastmod>2025-10-02T13:35:35+05:30</lastmod>
+    <lastmod>2025-10-07T21:29:19+05:30</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/Blog/posts/cav/</loc>
+    <lastmod>2025-10-07T21:29:19+05:30</lastmod>
   </url><url>
     <loc>http://localhost:1313/Blog/posts/</loc>
-    <lastmod>2025-10-02T13:35:35+05:30</lastmod>
+    <lastmod>2025-10-07T21:29:19+05:30</lastmod>
   </url><url>
-    <loc>http://localhost:1313/Blog/posts/testing/</loc>
-    <lastmod>2025-10-02T13:35:35+05:30</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/Blog/posts/hello/</loc>
-    <lastmod>2025-10-02T13:19:30+05:30</lastmod>
+    <loc>http://localhost:1313/Blog/posts/lock_down_gcp_service_accounts_with_least_privilege/</loc>
+    <lastmod>2025-10-05T20:29:21+05:30</lastmod>
   </url><url>
     <loc>http://localhost:1313/Blog/categories/</loc>
   </url><url>
