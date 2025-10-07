@@ -3,6 +3,8 @@ languageCode = 'en-us'
 title = 'Blog'
 theme= "PaperMod"
 
+
+
 [params.profileMode]
 enabled = true
 title = "Mohammed Fayasuddin"
@@ -49,6 +51,8 @@ imageHeight = 180
   hideSummary = false
   showtoc = true
   tocopen = false
+  hideFooter = true
+  hideCopyright = true
 
 [cover]
   image = "https://cdn.pixabay.com/photo/2014/09/02/15/28/styggkarret-433688_960_720.jpg"
