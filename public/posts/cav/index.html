@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" dir="auto">
 
-<head><script src="/Blog/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=Blog/livereload" data-no-instant defer></script><meta charset="utf-8">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="index, follow">
@@ -10,16 +10,16 @@
 <meta name="description" content="Your Azure infrastructure isn&rsquo;t just a list of names in a spreadsheet; it&rsquo;s a living, breathing network of interconnected services. So why are you still trying to understand it by scrolling through a flat CSV file? The complexity of modern cloud environments means that seeing the &ldquo;big picture&rdquo; how resources relate to each other and to the outside world is more critical than ever, yet often feels impossible.
 In this post, we&rsquo;ll introduce a powerful open-source tool, the Cloud Visualizer (CAV), that transforms that boring data export into a rich, interactive graph. We’ll show you exactly how to go from a raw CSV file to a fully explorable map of your cloud, and how to uncover security insights you might have otherwise missed.">
 <meta name="author" content="Fayasuddin">
-<link rel="canonical" href="http://localhost:1313/Blog/posts/cav/">
-<link crossorigin="anonymous" href="/Blog/assets/css/stylesheet.a482bf00fa5c046040ef7973ad5fdf5657890cacb596c93f1382f664ca542074.css" integrity="sha256-pIK/APpcBGBA73lzrV/fVleJDKy1lsk/E4L2ZMpUIHQ=" rel="preload stylesheet" as="style">
-<link rel="icon" href="http://localhost:1313/Blog/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/Blog/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/Blog/favicon-32x32.png">
-<link rel="apple-touch-icon" href="http://localhost:1313/Blog/apple-touch-icon.png">
-<link rel="mask-icon" href="http://localhost:1313/Blog/safari-pinned-tab.svg">
+<link rel="canonical" href="http://localhost:1313/posts/cav/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.a482bf00fa5c046040ef7973ad5fdf5657890cacb596c93f1382f664ca542074.css" integrity="sha256-pIK/APpcBGBA73lzrV/fVleJDKy1lsk/E4L2ZMpUIHQ=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="http://localhost:1313/Blog/posts/cav/">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/cav/">
 <noscript>
     <style>
         #theme-toggle,
@@ -56,7 +56,7 @@ In this post, we&rsquo;ll introduce a powerful open-source tool, the Cloud Visua
         }
 
     </style>
-</noscript><meta property="og:url" content="http://localhost:1313/Blog/posts/cav/">
+</noscript><meta property="og:url" content="http://localhost:1313/posts/cav/">
   <meta property="og:site_name" content="Blog">
   <meta property="og:title" content="From Flat File to Flying High: How to Visualize Your Entire Azure Cloud in 5 Minutes">
   <meta property="og:description" content="Your Azure infrastructure isn’t just a list of names in a spreadsheet; it’s a living, breathing network of interconnected services. So why are you still trying to understand it by scrolling through a flat CSV file? The complexity of modern cloud environments means that seeing the “big picture” how resources relate to each other and to the outside world is more critical than ever, yet often feels impossible.
@@ -81,13 +81,13 @@ In this post, we&rsquo;ll introduce a powerful open-source tool, the Cloud Visua
       "@type": "ListItem",
       "position":  1 ,
       "name": "Posts",
-      "item": "http://localhost:1313/Blog/posts/"
+      "item": "http://localhost:1313/posts/"
     }, 
     {
       "@type": "ListItem",
       "position":  2 ,
       "name": "From Flat File to Flying High: How to Visualize Your Entire Azure Cloud in 5 Minutes",
-      "item": "http://localhost:1313/Blog/posts/cav/"
+      "item": "http://localhost:1313/posts/cav/"
     }
   ]
 }
@@ -102,8 +102,8 @@ In this post, we&rsquo;ll introduce a powerful open-source tool, the Cloud Visua
   "keywords": [
     
   ],
-  "articleBody": "Your Azure infrastructure isn’t just a list of names in a spreadsheet; it’s a living, breathing network of interconnected services. So why are you still trying to understand it by scrolling through a flat CSV file? The complexity of modern cloud environments means that seeing the “big picture” how resources relate to each other and to the outside world is more critical than ever, yet often feels impossible.\nIn this post, we’ll introduce a powerful open-source tool, the Cloud Visualizer (CAV), that transforms that boring data export into a rich, interactive graph. We’ll show you exactly how to go from a raw CSV file to a fully explorable map of your cloud, and how to uncover security insights you might have otherwise missed.\nThe Problem: Cloud Blindness by Spreadsheet If you’ve ever used the Azure Portal’s “Export to CSV” feature or run a query in the Azure Resource Graph Explorer, you know the result: a massive table with thousands of rows. While this data is comprehensive, it’s terrible for understanding relationships. Which Network Security Group (NSG) applies to which Virtual Machine? Is that Storage Account publicly accessible? Answering these questions requires painstaking manual cross-referencing and can feel like searching for a needle in a digital haystack.\nThis lack of visibility isn’t just inefficient; it’s a security risk. A misconfigured rule buried deep in a resource’s JSON properties can go unnoticed, leaving your infrastructure exposed.\nIntroducing the Cloud Visualizer (CAV) The Cloud Visualizer (CAV) was built to solve this exact problem. It’s a simple yet powerful tool that ingests your resource CSV and generates a single, self-contained HTML file. When you open it, you’re greeted with an interactive, explorable graph of your entire Azure environment.\nKey features include:\nAn Interactive Map: Drag, zoom, and explore your resources as nodes and their inferred relationships as connecting lines.\nIntelligent Filtering: Instantly hide or show resources based on their Type or Resource Group.\nSecurity-Focused Views: Switch from a clean asset inventory to an “Internet Exposure” view that immediately highlights publicly accessible resources.\nInstant Property Inspection: Click any resource to see all its properties, beautifully formatted for readability.\nHow to Get Started in 3 Simple Steps Getting your own visualization is incredibly straightforward and takes only a few minutes.\nStep 1: Export Your Data from Azure\nThe CAV uses the output from the Azure Resource Graph Explorer, a powerful tool for querying your infrastructure.\nLog in to the Azure Portal and search for Resource Graph Explorer.\nPaste the following simple Kusto Query Language (KQL) query into the window. Replace the placeholder with your actual subscription ID.\nCode snippet\nresources\r| where subscriptionId == \"\" After the query runs, click the “Download as CSV” button. For more detailed instructions, you can consult the official Microsoft documentation.\nStep 2: Run the Processing Script\nWith your data file in hand, you just need to run the CAV’s Python backend. This script does all the heavy lifting: parsing the data, building the graph using the incredible NetworkX library, and performing the security analysis.\nMake sure you have the required Python packages installed: pip install pandas networkx matplotlib pyvis\nPlace your downloaded CSV into the project’s data folder.\nRun the script: python visualize_azure_graph.py\nThe script will generate a single file: azure_graph.html.\nStep 3: Explore Your Cloud!\nOpen azure_graph.html in your web browser. That’s it! You can now explore your infrastructure visually. Try using the “Controls” panel to filter down to just your Virtual Machines and their associated Network Interfaces, or click on a node to inspect its raw properties in the “Properties” panel on the right.\npen azure_graph.html in your web browser. That’s it! You can now explore your infrastructure visually. Try using the “Controls” panel to filter down to just your Virtual Machines and their associated Network Interfaces, or click on a node to inspect its raw properties in the “Properties” panel on the right.\n![[Pasted image 20251007213803.png]]\nBeyond a Simple Map: Uncovering Security Insights The most powerful feature of the CAV is the “Internet Exposure View.” When you enable this view, a special “Internet” node appears. The tool automatically draws connections from this node to any resource it determines is publicly accessible.\nFor example, it scans:\nNetwork Security Groups: If an inbound rule allows traffic from *, Internet, or 0.0.0.0/0, it flags the NSG as internet-exposed.\nStorage Accounts: If the default network access rule is Allow, it also flags the account as internet-exposed.\nThis provides an immediate, at-a-glance understanding of your potential attack surface, transforming the visualization from a simple inventory tool into a proactive security asset. The graph is generated on the front end using the excellent Pyvis library, which makes the dynamic interaction possible.\nConclusion: What Will You Discover in Your Cloud? Moving away from flat files and spreadsheets to a visual, interactive model of your cloud is a transformative step. It allows you to build a better mental map of your infrastructure, troubleshoot connectivity issues more effectively, and, most importantly, identify potential security risks before they become a problem. The Cloud Visualizer provides a free and open-source path to achieving that clarity.\nBy visualizing your own infrastructure, what hidden connections or potential security gaps do you think you’ll find first?\n",
-  "wordCount" : "868",
+  "articleBody": "Your Azure infrastructure isn’t just a list of names in a spreadsheet; it’s a living, breathing network of interconnected services. So why are you still trying to understand it by scrolling through a flat CSV file? The complexity of modern cloud environments means that seeing the “big picture” how resources relate to each other and to the outside world is more critical than ever, yet often feels impossible.\nIn this post, we’ll introduce a powerful open-source tool, the Cloud Visualizer (CAV), that transforms that boring data export into a rich, interactive graph. We’ll show you exactly how to go from a raw CSV file to a fully explorable map of your cloud, and how to uncover security insights you might have otherwise missed.\nThe Problem: Cloud Blindness by Spreadsheet If you’ve ever used the Azure Portal’s “Export to CSV” feature or run a query in the Azure Resource Graph Explorer, you know the result: a massive table with thousands of rows. While this data is comprehensive, it’s terrible for understanding relationships. Which Network Security Group (NSG) applies to which Virtual Machine? Is that Storage Account publicly accessible? Answering these questions requires painstaking manual cross-referencing and can feel like searching for a needle in a digital haystack.\nThis lack of visibility isn’t just inefficient; it’s a security risk. A misconfigured rule buried deep in a resource’s JSON properties can go unnoticed, leaving your infrastructure exposed.\nIntroducing the Cloud Visualizer (CAV) The Cloud Visualizer (CAV) was built to solve this exact problem. It’s a simple yet powerful tool that ingests your resource CSV and generates a single, self-contained HTML file. When you open it, you’re greeted with an interactive, explorable graph of your entire Azure environment.\nKey features include:\nAn Interactive Map: Drag, zoom, and explore your resources as nodes and their inferred relationships as connecting lines.\nIntelligent Filtering: Instantly hide or show resources based on their Type or Resource Group.\nSecurity-Focused Views: Switch from a clean asset inventory to an “Internet Exposure” view that immediately highlights publicly accessible resources.\nInstant Property Inspection: Click any resource to see all its properties, beautifully formatted for readability.\nHow to Get Started in 3 Simple Steps Getting your own visualization is incredibly straightforward and takes only a few minutes.\nStep 1: Export Your Data from Azure\nThe CAV uses the output from the Azure Resource Graph Explorer, a powerful tool for querying your infrastructure.\nLog in to the Azure Portal and search for Resource Graph Explorer.\nPaste the following simple Kusto Query Language (KQL) query into the window. Replace the placeholder with your actual subscription ID.\nCode snippet\nresources\r| where subscriptionId == \"\" After the query runs, click the “Download as CSV” button. For more detailed instructions, you can consult the official Microsoft documentation.\nStep 2: Run the Processing Script\nWith your data file in hand, you just need to run the CAV’s Python backend. This script does all the heavy lifting: parsing the data, building the graph using the incredible NetworkX library, and performing the security analysis.\nMake sure you have the required Python packages installed: pip install pandas networkx matplotlib pyvis\nPlace your downloaded CSV into the project’s data folder.\nRun the script: python visualize_azure_graph.py\nThe script will generate a single file: azure_graph.html.\nStep 3: Explore Your Cloud!\nOpen azure_graph.html in your web browser. That’s it! You can now explore your infrastructure visually. Try using the “Controls” panel to filter down to just your Virtual Machines and their associated Network Interfaces, or click on a node to inspect its raw properties in the “Properties” panel on the right.\npen azure_graph.html in your web browser. That’s it! You can now explore your infrastructure visually. Try using the “Controls” panel to filter down to just your Virtual Machines and their associated Network Interfaces, or click on a node to inspect its raw properties in the “Properties” panel on the right.\nBeyond a Simple Map: Uncovering Security Insights The most powerful feature of the CAV is the “Internet Exposure View.” When you enable this view, a special “Internet” node appears. The tool automatically draws connections from this node to any resource it determines is publicly accessible.\nFor example, it scans:\nNetwork Security Groups: If an inbound rule allows traffic from *, Internet, or 0.0.0.0/0, it flags the NSG as internet-exposed.\nStorage Accounts: If the default network access rule is Allow, it also flags the account as internet-exposed.\nThis provides an immediate, at-a-glance understanding of your potential attack surface, transforming the visualization from a simple inventory tool into a proactive security asset. The graph is generated on the front end using the excellent Pyvis library, which makes the dynamic interaction possible.\nConclusion: What Will You Discover in Your Cloud? Moving away from flat files and spreadsheets to a visual, interactive model of your cloud is a transformative step. It allows you to build a better mental map of your infrastructure, troubleshoot connectivity issues more effectively, and, most importantly, identify potential security risks before they become a problem. The Cloud Visualizer provides a free and open-source path to achieving that clarity.\nBy visualizing your own infrastructure, what hidden connections or potential security gaps do you think you’ll find first?\n",
+  "wordCount" : "865",
   "inLanguage": "en",
   "datePublished": "2025-10-07T21:29:19+05:30",
   "dateModified": "2025-10-07T21:29:19+05:30",
@@ -113,14 +113,14 @@ In this post, we&rsquo;ll introduce a powerful open-source tool, the Cloud Visua
   },
   "mainEntityOfPage": {
     "@type": "WebPage",
-    "@id": "http://localhost:1313/Blog/posts/cav/"
+    "@id": "http://localhost:1313/posts/cav/"
   },
   "publisher": {
     "@type": "Organization",
     "name": "Blog",
     "logo": {
       "@type": "ImageObject",
-      "url": "http://localhost:1313/Blog/favicon.ico"
+      "url": "http://localhost:1313/favicon.ico"
     }
   }
 }
@@ -142,7 +142,7 @@ In this post, we&rsquo;ll introduce a powerful open-source tool, the Cloud Visua
 <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="http://localhost:1313/Blog/" accesskey="h" title="Blog (Alt + H)">Blog</a>
+            <a href="http://localhost:1313/" accesskey="h" title="Blog (Alt + H)">Blog</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -261,7 +261,7 @@ In this post, we&rsquo;ll introduce a powerful open-source tool, the Cloud Visua
 <p><strong>Step 3: Explore Your Cloud!</strong></p>
 <p>Open <code>azure_graph.html</code> in your web browser. That&rsquo;s it! You can now explore your infrastructure visually. Try using the &ldquo;Controls&rdquo; panel to filter down to just your Virtual Machines and their associated Network Interfaces, or click on a node to inspect its raw properties in the &ldquo;Properties&rdquo; panel on the right.</p>
 <p>pen <code>azure_graph.html</code> in your web browser. That&rsquo;s it! You can now explore your infrastructure visually. Try using the &ldquo;Controls&rdquo; panel to filter down to just your Virtual Machines and their associated Network Interfaces, or click on a node to inspect its raw properties in the &ldquo;Properties&rdquo; panel on the right.</p>
-<p>![[Pasted image 20251007213803.png]]</p>
+<p><img alt="Azure Graph" loading="lazy" src="image.png"></p>
 <h3 id="beyond-a-simple-map-uncovering-security-insights">Beyond a Simple Map: Uncovering Security Insights<a hidden class="anchor" aria-hidden="true" href="#beyond-a-simple-map-uncovering-security-insights">#</a></h3>
 <p>The most powerful feature of the CAV is the <strong>&ldquo;Internet Exposure View.&rdquo;</strong> When you enable this view, a special &ldquo;Internet&rdquo; node appears. The tool automatically draws connections from this node to any resource it determines is publicly accessible.</p>
 <p>For example, it scans:</p>
@@ -289,7 +289,7 @@ In this post, we&rsquo;ll introduce a powerful open-source tool, the Cloud Visua
     </main>
     
 <footer class="footer">
-        <span>&copy; 2025 <a href="http://localhost:1313/Blog/">Blog</a></span> · 
+        <span>&copy; 2025 <a href="http://localhost:1313/">Blog</a></span> · 
 
     <span>
         Powered by

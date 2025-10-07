@@ -2,25 +2,25 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Blog</title>
-    <link>http://localhost:1313/Blog/</link>
+    <link>http://localhost:1313/</link>
     <description>Recent content on Blog</description>
     <generator>Hugo -- 0.147.0</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 07 Oct 2025 21:29:19 +0530</lastBuildDate>
-    <atom:link href="http://localhost:1313/Blog/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>From Flat File to Flying High: How to Visualize Your Entire Azure Cloud in 5 Minutes</title>
-      <link>http://localhost:1313/Blog/posts/cav/</link>
+      <link>http://localhost:1313/posts/cav/</link>
       <pubDate>Tue, 07 Oct 2025 21:29:19 +0530</pubDate>
-      <guid>http://localhost:1313/Blog/posts/cav/</guid>
+      <guid>http://localhost:1313/posts/cav/</guid>
       <description>&lt;p&gt;Your Azure infrastructure isn&amp;rsquo;t just a list of names in a spreadsheet; it&amp;rsquo;s a living, breathing network of interconnected services. So why are you still trying to understand it by scrolling through a flat CSV file? The complexity of modern cloud environments means that seeing the &amp;ldquo;big picture&amp;rdquo; how resources relate to each other and to the outside world is more critical than ever, yet often feels impossible.&lt;/p&gt;
 &lt;p&gt;In this post, we&amp;rsquo;ll introduce a powerful open-source tool, the &lt;strong&gt;Cloud Visualizer (CAV)&lt;/strong&gt;, that transforms that boring data export into a rich, interactive graph. We’ll show you exactly how to go from a raw CSV file to a fully explorable map of your cloud, and how to uncover security insights you might have otherwise missed.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Stop Overpowered Service Accounts: How to Apply Least Privilege in Google Cloud the Right Way</title>
-      <link>http://localhost:1313/Blog/posts/lock_down_gcp_service_accounts_with_least_privilege/</link>
+      <link>http://localhost:1313/posts/lock_down_gcp_service_accounts_with_least_privilege/</link>
       <pubDate>Sun, 05 Oct 2025 20:29:21 +0530</pubDate>
-      <guid>http://localhost:1313/Blog/posts/lock_down_gcp_service_accounts_with_least_privilege/</guid>
+      <guid>http://localhost:1313/posts/lock_down_gcp_service_accounts_with_least_privilege/</guid>
       <description>&lt;h1&gt;&lt;/h1&gt;
 &lt;h2 id=&#34;introduction-overprivileged-accounts-are-a-hidden-risk&#34;&gt;Introduction: Overprivileged Accounts Are a Hidden Risk&lt;/h2&gt;
 &lt;p&gt;In Google Cloud, service accounts are the backbone of automation, enabling applications and scripts to interact securely with cloud resources. But when a service account has &lt;strong&gt;more privileges than necessary&lt;/strong&gt;, it becomes a ticking time bomb a single compromised account can lead to data leaks, resource misuse, or lateral movement across your cloud environment.&lt;/p&gt;
