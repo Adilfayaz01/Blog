@@ -1,7 +1,16 @@
 baseURL = 'https://fayasuddin.blog/'
 languageCode = 'en-us'
-title = 'Blog'
-theme= "PaperMod"
+title = 'Mohammed Fayasuddin'
+theme = "PaperMod"
+description = "Cloud security guides, tutorials, and deep dives across AWS, Azure, and GCP by Mohammed Fayasuddin"
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
 
 
 
@@ -20,7 +29,7 @@ imageHeight = 180
 
   [[params.socialIcons]]
   name = "Youtube"
-  url = "<link>"
+  url = "https://youtube.com/@fayasuddin"
 
   [[params.socialIcons]]
   name = "Github"
@@ -34,12 +43,12 @@ imageHeight = 180
   env = "production"
   author = "Fayasuddin"
   DateFormat = "January 2, 2006"
-  defaultTheme = "auto"
+  defaultTheme = "light"
   disableThemeToggle = false
   ShowReadingTime = true
-  ShowShareButtons = false
-  ShowPostNavLinks = false
-  ShowBreadCrumbs = false
+  ShowShareButtons = true
+  ShowPostNavLinks = true
+  ShowBreadCrumbs = true
   ShowCodeCopyButtons = false
   ShowWordCount = false
   ShowRssButtonInSectionTermList = false
@@ -53,6 +62,27 @@ imageHeight = 180
   tocopen = false
   hideFooter = true
   hideCopyright = true
+
+  [params.fuseOpts]
+    isCaseSensitive = false
+    shouldSort = true
+    location = 0
+    distance = 100
+    threshold = 0.3
+    ignoreLocation = true
+    minMatchCharLength = 2
+    limit = 20
+    keys = ["title", "permalink", "summary", "content"]
+
+[[menu.main]]
+  name = "Home"
+  url = "/"
+  weight = 1
+
+[[menu.main]]
+  name = "Blog"
+  url = "/posts/"
+  weight = 2
 
 [cover]
   image = "https://cdn.pixabay.com/photo/2014/09/02/15/28/styggkarret-433688_960_720.jpg"

@@ -2,6 +2,7 @@
 date = '2025-10-07T21:29:19+05:30'
 draft = false
 title = 'From Flat File to Flying High: How to Visualize Your Entire Azure Cloud in 5 Minutes'
+tags = ["Azure", "cloud visualization", "CAV", "NetworkX", "Pyvis", "security"]
 +++
 
 Your Azure infrastructure isn't just a list of names in a spreadsheet; it's a living, breathing network of interconnected services. So why are you still trying to understand it by scrolling through a flat CSV file? The complexity of modern cloud environments means that seeing the "big picture" how resources relate to each other and to the outside world is more critical than ever, yet often feels impossible.
@@ -48,12 +49,12 @@ The CAV uses the output from the Azure Resource Graph Explorer, a powerful tool 
     | where subscriptionId == "<You Subscription ID Here>"
     ```
     
-3. After the query runs, click the **"Download as CSV"** button. For more detailed instructions, you can consult the official [Microsoft documentation](https://learn.microsoft.com/en-us/azure/governance/resource-graph/first-query-portal).
+3. After the query runs, click the **"Download as CSV"** button. For more detailed instructions, you can consult the official [Microsoft documentation](httpss://learn.microsoft.com/en-us/azure/governance/resource-graph/first-query-portal).
     
 
 **Step 2: Run the Processing Script**
 
-With your data file in hand, you just need to run the CAV's Python backend. This script does all the heavy lifting: parsing the data, building the graph using the incredible [NetworkX](https://networkx.org/) library, and performing the security analysis.
+With your data file in hand, you just need to run the CAV's Python backend. This script does all the heavy lifting: parsing the data, building the graph using the incredible [NetworkX](httpss://networkx.org/) library, and performing the security analysis.
 
 1. Make sure you have the required Python packages installed: `pip install pandas networkx matplotlib pyvis`
     
@@ -83,7 +84,7 @@ For example, it scans:
 - **Storage Accounts:** If the default network access rule is `Allow`, it also flags the account as internet-exposed.
     
 
-This provides an immediate, at-a-glance understanding of your potential attack surface, transforming the visualization from a simple inventory tool into a proactive security asset. The graph is generated on the front end using the excellent [Pyvis](https://pyvis.readthedocs.io/en/latest/) library, which makes the dynamic interaction possible.
+This provides an immediate, at-a-glance understanding of your potential attack surface, transforming the visualization from a simple inventory tool into a proactive security asset. The graph is generated on the front end using the excellent [Pyvis](httpss://pyvis.readthedocs.io/en/latest/) library, which makes the dynamic interaction possible.
 
 ### Conclusion: What Will You Discover in Your Cloud?
 

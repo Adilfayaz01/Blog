@@ -1,0 +1,65 @@
+<div class="bg-orbs"><div class="bg-orb"></div><div class="bg-orb"></div><div class="bg-orb"></div><div class="bg-orb"></div><div class="bg-orb"></div><div class="bg-orb"></div><div class="bg-orb"></div><div class="bg-orb"></div><div class="bg-orb"></div><div class="bg-orb"></div><div class="bg-orb"></div><div class="bg-orb"></div><span class="firefly"></span><span class="firefly"></span><span class="firefly"></span><span class="firefly"></span><span class="firefly"></span><span class="firefly"></span><span class="firefly"></span><span class="firefly"></span><span class="firefly"></span><span class="firefly"></span><span class="firefly"></span><span class="firefly"></span><span class="firefly"></span><span class="firefly"></span><span class="firefly"></span><span class="firefly"></span><span class="firefly"></span><span class="firefly"></span><span class="firefly"></span><span class="firefly"></span><span class="firefly"></span><span class="firefly"></span><span class="firefly"></span><span class="firefly"></span></div>
+
+<button id="theme-float" class="theme-float" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+  <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
+    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+  </svg>
+  <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
+    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="5"></circle>
+    <line x1="12" y1="1" x2="12" y2="3"></line>
+    <line x1="12" y1="21" x2="12" y2="23"></line>
+    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+    <line x1="1" y1="12" x2="3" y2="12"></line>
+    <line x1="21" y1="12" x2="23" y2="12"></line>
+    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+  </svg>
+</button>
+<script>
+  document.getElementById('theme-float').addEventListener('click', function () {
+    if (document.body.classList.contains('dark')) {
+      document.body.classList.remove('dark');
+      localStorage.setItem('pref-theme', 'light');
+    } else {
+      document.body.classList.add('dark');
+      localStorage.setItem('pref-theme', 'dark');
+    }
+  });
+
+  document.querySelectorAll('.toc details').forEach(function (details) {
+    var inner = details.querySelector('.inner');
+    var summary = details.querySelector('summary');
+    if (!inner || !summary) return;
+
+    details.setAttribute('open', '');
+
+    if (details.classList.contains('toc-open')) {
+      inner.style.maxHeight = inner.scrollHeight + 'px';
+      inner.style.opacity = '1';
+      inner.style.marginTop = '10px';
+      inner.style.marginBottom = '10px';
+    }
+
+    summary.addEventListener('click', function (e) {
+      e.preventDefault();
+      if (details.classList.contains('toc-open')) {
+        inner.style.maxHeight = '0';
+        inner.style.opacity = '0';
+        inner.style.marginTop = '0';
+        inner.style.marginBottom = '0';
+        details.classList.remove('toc-open');
+      } else {
+        details.classList.add('toc-open');
+        requestAnimationFrame(function () {
+          inner.style.maxHeight = inner.scrollHeight + 'px';
+          inner.style.opacity = '1';
+          inner.style.marginTop = '10px';
+          inner.style.marginBottom = '10px';
+        });
+      }
+    });
+  });
+</script>

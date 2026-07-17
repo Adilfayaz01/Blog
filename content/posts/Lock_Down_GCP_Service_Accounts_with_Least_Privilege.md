@@ -2,6 +2,7 @@
 date = '2025-10-05T20:29:21+05:30'
 draft = false
 title = 'Stop Overpowered Service Accounts: How to Apply Least Privilege in Google Cloud the Right Way'
+tags = ["GCP", "IAM", "service accounts", "least privilege", "security", "cloud"]
 [cover]
     image = "https://cdn.pixabay.com/photo/2014/09/02/15/28/styggkarret-433688_960_720.jpg"
     alt = "Test"
@@ -30,7 +31,7 @@ gcloud iam service-accounts list --project PROJECT_ID
 
 Document their roles, usage patterns, and dependencies. Avoid making assumptions; **a service account might be powering a production app or a rarely used script**. Tools like **Cloud Asset Inventory** can help you map which accounts access which resources, giving you a clear picture of potential overprivilege.
 
-> Reference: [GCP Cloud Asset Inventory](https://cloud.google.com/asset-inventory/docs/overview)
+<div class="ref-card">Reference: <a href="https://cloud.google.com/asset-inventory/docs/overview">GCP Cloud Asset Inventory</a></div>
 
 ## Apply Least Privilege: Only Grant What’s Needed
 
@@ -68,7 +69,7 @@ gcloud iam service-accounts keys create key.json \
 
 Rotate keys frequently and remove old ones immediately.
 
-> Reference: [GCP IAM Best Practices](https://cloud.google.com/iam/docs/best-practices)
+<div class="ref-card">Reference: <a href="https://cloud.google.com/iam/docs/best-practices">GCP IAM Best Practices</a></div>
 
 ## Audit and Monitor Service Accounts Continuously
 
@@ -82,7 +83,8 @@ Implementing PoLP isn’t a one-time effort. Continuous auditing ensures that pr
     
 Automation can help tools like **GCP Security Command Center** provide automated checks against overprivileged accounts.
 
-> Reference: [GCP Security Command Center](https://cloud.google.com/security-command-center)
+<div class="ref-card">Reference: <a href="https://cloud.google.com/security-command-center">GCP Security Command Center</a></div>
+
 ## Decommission Unused Service Accounts
 
 Every service account that isn’t actively used is a **security liability**. Regularly review and delete or disable accounts no longer needed:

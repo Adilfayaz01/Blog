@@ -1,0 +1,67 @@
+<div class="post-search" id="postSearch">
+  <div id="searchBackdrop"></div>
+  <div id="searchbox">
+    <div class="post-search-input-wrap">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input id="searchInput" placeholder="Search posts..." aria-label="search" type="search" autocomplete="off" maxlength="64">
+    </div>
+    <ul id="searchResults" aria-label="search results"></ul>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var input = document.getElementById('searchInput');
+  var box = document.getElementById('searchbox');
+  var back = document.getElementById('searchBackdrop');
+  var results = document.getElementById('searchResults');
+  function update() {
+    var active = box.classList.contains('typing') && results.children.length > 0;
+    box.classList.toggle('has-results', results.children.length > 0);
+    back.classList.toggle('visible', active);
+    document.body.classList.toggle('search-open', active);
+  }
+  if (input && box) {
+    input.addEventListener('input', function() {
+      box.classList.toggle('typing', this.value.trim().length > 0);
+      update();
+    });
+    input.addEventListener('search', function() {
+      if (!this.value) {
+        box.classList.remove('typing', 'has-results');
+        back.classList.remove('visible');
+        document.body.classList.remove('search-open');
+      }
+    });
+    input.addEventListener('focus', function() {
+      if (this.value.trim()) update();
+    });
+    input.addEventListener('blur', function() {
+      setTimeout(function() {
+        if (!box.contains(document.activeElement)) {
+          back.classList.remove('visible');
+          document.body.classList.remove('search-open');
+        }
+      }, 150);
+    });
+    if (results) {
+      var observer = new MutationObserver(update);
+      observer.observe(results, { childList: true });
+    }
+  }
+});
+</script>
+
+{{- $fastsearch := resources.Get "js/fastsearch.js" | js.Build (dict "params" (dict "fuseOpts" site.Params.fuseOpts)) | resources.Minify }}
+{{- $fusejs := resources.Get "js/fuse.basic.min.js" }}
+{{- $license_js := resources.Get "js/license.js" }}
+{{- if not site.Params.assets.disableFingerprinting }}
+{{- $search := (slice $fusejs $license_js $fastsearch ) | resources.Concat "assets/js/search.js" | fingerprint }}
+<script defer crossorigin="anonymous" src="{{ $search.RelPermalink }}" integrity="{{ $search.Data.Integrity }}"></script>
+{{- else }}
+{{- $search := (slice $fusejs $fastsearch ) | resources.Concat "assets/js/search.js" }}
+<script defer crossorigin="anonymous" src="{{ $search.RelPermalink }}"></script>
+{{- end }}
