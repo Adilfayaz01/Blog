@@ -57,10 +57,20 @@
 
 {{- $term := .Data.Term }}
 
+{{- $newWithinDays := site.Params.newPostDays | default 14 }}
+
 <div class="post-grid">
 {{- range $index, $page := $paginator.Pages }}
 
 {{- $class := "post-entry" }}
+
+{{- $isNew := false }}
+{{- $badgeOverride := .Param "newBadge" }}
+{{- if eq $badgeOverride true }}
+{{- $isNew = true }}
+{{- else if ne $badgeOverride false }}
+{{- $isNew = lt (sub now.Unix .Date.Unix) (mul $newWithinDays 86400) }}
+{{- end }}
 
 {{- $user_preferred := or site.Params.disableSpecial1stPost site.Params.homeInfoParams }}
 {{- if (and $.IsHome (eq $paginator.PageNumber 1) (eq $index 0) (not $user_preferred)) }}
@@ -72,6 +82,9 @@
 <article class="{{ $class }}">
   {{- $isHidden := (.Param "cover.hiddenInList") | default (.Param "cover.hidden") | default false }}
   {{- partial "cover.html" (dict "cxt" . "IsSingle" false "isHidden" $isHidden) }}
+  {{- if $isNew }}
+  <span class="new-badge" title="Published within the last {{ $newWithinDays }} days">New</span>
+  {{- end }}
   <header class="entry-header">
     <h2 class="entry-hint-parent">
       <a href="{{ .Permalink }}">{{- .Title }}</a>

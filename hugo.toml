@@ -62,6 +62,7 @@ imageHeight = 180
   tocopen = false
   hideFooter = true
   hideCopyright = true
+  newPostDays = 14
 
   [params.fuseOpts]
     isCaseSensitive = false

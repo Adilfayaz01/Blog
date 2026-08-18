@@ -1,5 +1,5 @@
 +++
-date = '2025-08-03T12:00:00+05:30'
+date = '2026-08-15T12:00:00+05:30'
 draft = false
 title = 'Building Custom AI Skills and Pipelines: A Practical Guide'
 tags = ["AI", "automation", "claude", "skills", "pipelines", "open-code", "agents"]
