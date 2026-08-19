@@ -3,7 +3,7 @@
 {{- end -}}
 
 <!DOCTYPE html>
-<html lang="{{ site.Language }}" dir="{{ .Language.LanguageDirection | default "auto" }}">
+<html lang="{{ site.Language }}" dir="{{ .Language.LanguageDirection | default "auto" }}"{{- if .IsHome }} class="snap-home"{{- end }}>
 
 <head>
     {{- partial "head.html" . }}
@@ -15,6 +15,12 @@
 {{- end -}}
 {{- if eq site.Params.defaultTheme `dark` -}}
 {{- print " dark" }}
+{{- end -}}
+{{- if .IsHome -}}
+{{- print " home-mode" }}
+{{- end -}}
+{{- if eq .Kind `page` -}}
+{{- print " single-page" }}
 {{- end -}}
 " id="top">
     {{- partialCached "header.html" . .Page -}}

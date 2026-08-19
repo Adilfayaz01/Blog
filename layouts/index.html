@@ -1,0 +1,191 @@
+{{- define "main" }}
+{{- $profile := site.Params.profileMode }}
+{{- $pages := where site.RegularPages "Type" "in" site.Params.mainSections }}
+{{- $sorted := $pages.ByDate.Reverse }}
+{{- $featured := index $sorted 0 }}
+{{- $rest := first 5 (after 1 $sorted) }}
+{{- $newWithinDays := site.Params.newPostDays | default 14 }}
+{{- $tags := slice }}
+{{- range $pages }}{{ range .Params.tags }}{{ $tags = $tags | append . }}{{ end }}{{ end }}
+{{- $tagCount := len ($tags | uniq) }}
+
+<div class="home">
+
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track">
+      {{- $tickerItems := slice "Cloud Security" "Threat Detection" "Automation" "Least Privilege" "AI & Security" "CSPM" "Zero Trust" "SIEM" }}
+      {{- range seq 2 }}
+      {{- range $tickerItems }}
+      <span class="ticker-item">{{ . }}</span><span class="ticker-sep">&#9679;</span>
+      {{- end }}
+      {{- end }}
+    </div>
+  </div>
+
+  <section class="home-hero">
+    <div class="home-hero-inner js-hero">
+      <div class="home-hero-copy">
+        <p class="home-eyebrow reveal">Cloud Security Engineer</p>
+        <h1 class="home-name reveal">{{ $profile.title | default site.Title | markdownify }}</h1>
+        <p class="home-position reveal">Practical cloud security for engineers and executives. Real misconfigurations, real fixes, no vendor fluff.</p>
+        <div class="home-actions reveal">
+          {{- with $profile.buttons }}
+          {{- range . }}
+          <a class="button shimmer" href="{{ trim .url " " }}" rel="noopener" title="{{ .name }}">
+            <span class="button-inner">{{ .name }}</span>
+          </a>
+          {{- end }}
+          {{- end }}
+        </div>
+      </div>
+      <div class="home-hero-side reveal">
+        <div class="home-avatar-ring">
+          {{- if $profile.imageUrl }}
+          <img class="home-avatar" draggable="false" src="{{ $profile.imageUrl | absURL }}" alt="{{ $profile.imageTitle | default "profile image" }}" title="{{ $profile.imageTitle }}" width="150" height="150" />
+          {{- end }}
+        </div>
+        <p class="home-role">{{ $profile.subtitle | markdownify }}</p>
+        <div class="home-socials">
+          {{- partial "social_icons.html" -}}
+        </div>
+      </div>
+    </div>
+    <div class="home-scroll" aria-hidden="true">
+      <span>Scroll</span>
+      <span class="home-scroll-line"></span>
+    </div>
+  </section>
+
+  {{- with $featured }}
+  <section class="home-section reveal-section">
+    <div class="home-strip reveal">
+      <div class="home-strip-inner">
+        <div class="home-strip-item">
+          <span class="home-strip-num" data-count="{{ len $pages }}">{{ len $pages }}</span>
+          <span class="home-strip-label">Posts</span>
+        </div>
+        <div class="home-strip-item">
+          <span class="home-strip-num" data-count="{{ $tagCount }}">{{ $tagCount }}</span>
+          <span class="home-strip-label">Topics</span>
+        </div>
+        <div class="home-strip-item">
+          <span class="home-strip-num">3</span>
+          <span class="home-strip-label">Clouds</span>
+        </div>
+        <div class="home-strip-item">
+          <span class="home-strip-num home-strip-num-wide">Cloud + AI</span>
+          <span class="home-strip-label">Focus</span>
+        </div>
+      </div>
+    </div>
+    <p class="home-kicker reveal">Featured Briefing</p>
+    <a class="home-featured-card reveal" href="{{ .RelPermalink }}" data-spotlight>
+      {{- $isNew := false }}
+      {{- $badgeOverride := .Param "newBadge" }}
+      {{- if eq $badgeOverride true }}
+      {{- $isNew = true }}
+      {{- else if ne $badgeOverride false }}
+      {{- $isNew = lt (sub now.Unix .Date.Unix) (mul $newWithinDays 86400) }}
+      {{- end }}
+      {{- if $isNew }}
+      <span class="new-badge" title="Published within the last {{ $newWithinDays }} days">New</span>
+      {{- end }}
+      <h2 class="home-featured-title">{{ .Title }}</h2>
+      {{- if (ne (.Param "hideSummary") true) }}
+      <p class="home-featured-summary">{{ .Summary | plainify | htmlUnescape }}{{ if .Truncated }}...{{ end }}</p>
+      {{- end }}
+      <div class="home-featured-meta">
+        <span>{{ .Date.Format "January 2, 2006" }}</span>
+        <span class="home-featured-dot">&#9679;</span>
+        <span>{{ .ReadingTime }} min read</span>
+        <span class="home-featured-arrow" aria-hidden="true">&rarr;</span>
+      </div>
+    </a>
+  </section>
+  {{- end }}
+
+  <section class="home-section reveal-section">
+    <p class="home-kicker reveal">Latest Writing</p>
+    <div class="home-post-grid reveal">
+      {{- range $rest }}
+      <article class="post-entry">
+        {{- $isNew := false }}
+        {{- $badgeOverride := .Param "newBadge" }}
+        {{- if eq $badgeOverride true }}
+        {{- $isNew = true }}
+        {{- else if ne $badgeOverride false }}
+        {{- $isNew = lt (sub now.Unix .Date.Unix) (mul $newWithinDays 86400) }}
+        {{- end }}
+        {{- if $isNew }}
+        <span class="new-badge" title="Published within the last {{ $newWithinDays }} days">New</span>
+        {{- end }}
+        <header class="entry-header">
+          <h2 class="entry-hint-parent">
+            <a href="{{ .RelPermalink }}">{{- .Title }}</a>
+          </h2>
+        </header>
+        {{- if (ne (.Param "hideSummary") true) }}
+        <div class="entry-content">
+          <p>{{ .Summary | plainify | htmlUnescape }}{{ if .Truncated }}...{{ end }}</p>
+        </div>
+        {{- end }}
+        {{- if not (.Param "hideMeta") }}
+        <footer class="entry-footer">
+          {{- partial "post_meta.html" . -}}
+        </footer>
+        {{- end }}
+        <a class="entry-link" aria-label="post link to {{ .Title | plainify }}" href="{{ .RelPermalink }}"></a>
+      </article>
+      {{- end }}
+    </div>
+    <div class="home-more reveal">
+      <a class="button shimmer" href="/posts/" title="All posts">
+        <span class="button-inner">All Posts</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="home-section reveal-section">
+    <p class="home-kicker reveal">Focus Areas</p>
+    <div class="home-skills reveal">
+      {{- $skills := slice
+        (dict "num" "01" "title" "Cloud Security" "tag" "cloud-security" "text" "Hardening AWS, Azure, and GCP against the misconfigurations that cause real breaches.")
+        (dict "num" "02" "title" "Threat Detection" "tag" "detection" "text" "SIEM rules, log triage, and detection engineering that catches what the defaults miss.")
+        (dict "num" "03" "title" "Automation" "tag" "automation" "text" "Scripts and pipelines that turn security reviews from days of clicking into minutes of waiting.")
+        (dict "num" "04" "title" "Least Privilege" "tag" "least-privilege" "text" "IAM audits and PoLP enforcement so one compromised key can't burn the whole estate.")
+        (dict "num" "05" "title" "CSPM" "tag" "cspm" "text" "Continuous posture checks against CIS and NIST, because a yearly review is not security.")
+        (dict "num" "06" "title" "AI & Security" "tag" "ai" "text" "Using AI for day-to-day security work, and knowing exactly where it goes wrong.")
+      }}
+      {{- range $skills }}
+      <a class="home-skill" href="{{ printf "/tags/%s/" .tag | relLangURL }}" data-spotlight>
+        <span class="home-skill-num">{{ .num }}</span>
+        <h3 class="home-skill-title">{{ .title }}</h3>
+        <p class="home-skill-text">{{ .text }}</p>
+      </a>
+      {{- end }}
+    </div>
+  </section>
+
+  <section class="home-section home-cta-wrap reveal-section">
+    <div class="home-cta-bar reveal">
+      <div class="home-cta-copy">
+        <h2 class="home-cta-title">Put Your Cloud to the Test</h2>
+        <p class="home-cta-text">Questions, corrections, or an environment you want a second pair of eyes on?</p>
+      </div>
+      <div class="home-cta-actions">
+        <div class="home-socials">
+          {{- partial "social_icons.html" -}}
+        </div>
+        {{- with $profile.buttons }}
+        {{- range . }}
+        <a class="button shimmer" href="{{ trim .url " " }}" rel="noopener" title="{{ .name }}">
+          <span class="button-inner">{{ .name }}</span>
+        </a>
+        {{- end }}
+        {{- end }}
+      </div>
+    </div>
+  </section>
+
+</div>
+{{- end }}
