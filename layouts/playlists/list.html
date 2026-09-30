@@ -1,0 +1,117 @@
+{{- define "main" }}
+
+{{- if .Parent.IsHome }}
+{{- /* ————— Playlists index: list all playlists ————— */}}
+<header class="page-header">
+  {{- partial "breadcrumbs.html" . }}
+  <h1>{{ .Title }}</h1>
+  {{- if .Description }}
+  <div class="post-description">{{ .Description | markdownify }}</div>
+  {{- end }}
+</header>
+
+{{- $playlists := .Sections.ByDate.Reverse }}
+{{- if not $playlists }}
+{{- $playlists = .Sections }}
+{{- end }}
+
+<div class="playlists-grid">
+  {{- range $playlists }}
+  {{- $parts := .RegularPages }}
+  <a class="playlist-card" href="{{ .RelPermalink }}" data-spotlight>
+    <div class="playlist-card-top">
+      {{- if .Params.emoji }}
+      <span class="playlist-emoji">{{ .Params.emoji }}</span>
+      {{- end }}
+      {{- if .Params.cover }}
+      <span class="playlist-thumb" aria-hidden="true">
+        <img loading="lazy" src="{{ .Params.cover.image | default .Params.cover | absURL }}" alt="" />
+      </span>
+      {{- end }}
+      {{- if .Params.playlist.status }}
+      <span class="playlist-status">{{ .Params.playlist.status | title }}</span>
+      {{- end }}
+    </div>
+    <div class="playlist-card-body">
+      <h2 class="playlist-card-title">{{ .Title }}</h2>
+      {{- if .Description }}
+      <p class="playlist-card-desc">{{ .Description | plainify | htmlUnescape }}</p>
+      {{- end }}
+      <div class="playlist-card-meta">
+        <span>{{ len $parts }} parts</span>
+        {{- if .Params.playlist.level }}
+        <span class="home-featured-dot">&#9679;</span>
+        <span>{{ .Params.playlist.level }}</span>
+        {{- end }}
+        <span class="playlist-card-arrow" aria-hidden="true">&rarr;</span>
+      </div>
+    </div>
+  </a>
+  {{- end }}
+</div>
+
+{{- else }}
+{{- /* ————— Single playlist landing: list its parts ————— */}}
+{{- $parts := .RegularPages }}
+{{- $total := len $parts }}
+
+<header class="page-header playlist-header">
+  {{- partial "breadcrumbs.html" . }}
+  <div class="playlist-hero">
+    {{- if .Params.cover }}
+    <img class="playlist-hero-cover" loading="lazy" src="{{ .Params.cover.image | default .Params.cover | absURL }}" alt="" />
+    {{- end }}
+    <div class="playlist-hero-copy">
+      <p class="home-eyebrow">Playlist{{ with .Params.playlist.level }} · {{ . }}{{ end }}</p>
+      <h1>{{ .Title }}</h1>
+      {{- if .Description }}
+      <p class="post-description">{{ .Description | markdownify }}</p>
+      {{- end }}
+      <div class="playlist-hero-meta">
+        <span>{{ $total }} parts</span>
+        <span class="home-featured-dot">&#9679;</span>
+        <span>{{ range $parts }}{{ .ReadingTime }}{{ end }} min total</span>
+        {{- if .Params.playlist.status }}
+        <span class="home-featured-dot">&#9679;</span>
+        <span>{{ .Params.playlist.status | title }}</span>
+        {{- end }}
+      </div>
+    </div>
+  </div>
+</header>
+
+{{- if .Content }}
+<div class="post-content">
+  {{- if not (.Param "disableAnchoredHeadings") }}
+  {{- partial "anchored_headings.html" .Content -}}
+  {{- else }}{{ .Content }}{{ end }}
+</div>
+{{- end }}
+
+<div class="playlist-parts">
+  {{- range $i, $part := $parts }}
+  <a class="playlist-part" href="{{ $part.RelPermalink }}" data-spotlight>
+    <span class="playlist-part-num">{{ printf "%02d" (add $i 1) }}</span>
+    <div class="playlist-part-body">
+      <h3 class="playlist-part-title">{{ $part.Title }}</h3>
+      {{- if (ne ($part.Param "hideSummary") true) }}
+      <p class="playlist-part-summary">{{ $part.Summary | plainify | htmlUnescape }}{{ if $part.Truncated }}...{{ end }}</p>
+      {{- end }}
+      <div class="playlist-part-meta">
+        <span>{{ $part.Date.Format "January 2, 2006" }}</span>
+        <span class="home-featured-dot">&#9679;</span>
+        <span>{{ $part.ReadingTime }} min read</span>
+      </div>
+    </div>
+    <span class="playlist-part-play" aria-hidden="true">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+        <path d="M8 5v14l11-7z"></path>
+      </svg>
+    </span>
+  </a>
+  {{- end }}
+</div>
+
+{{- end }}
+
+{{- end }}

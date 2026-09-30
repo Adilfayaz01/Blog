@@ -132,6 +132,7 @@
         {{- if not (.Param "hideMeta") }}
         <footer class="entry-footer">
           {{- partial "post_meta.html" . -}}
+          <span class="entry-arrow" aria-hidden="true">&rarr;</span>
         </footer>
         {{- end }}
         <a class="entry-link" aria-label="post link to {{ .Title | plainify }}" href="{{ .RelPermalink }}"></a>
@@ -143,6 +144,43 @@
         <span class="button-inner">All Posts</span>
       </a>
     </div>
+  </section>
+
+  <section class="home-section reveal-section">
+    <p class="home-kicker reveal">Playlists</p>
+    {{- $playlists := where (site.GetPage "/playlists").Sections "Params.hiddenInHome" "!=" true }}
+    {{- if $playlists }}
+    <div class="home-playlists reveal">
+      {{- range first 3 $playlists }}
+      {{- $parts := .RegularPages }}
+      <a class="home-playlist" href="{{ .RelPermalink }}" data-spotlight>
+        <div class="home-playlist-top">
+          {{- if .Params.emoji }}
+          <span class="playlist-emoji">{{ .Params.emoji }}</span>
+          {{- end }}
+          {{- if .Params.playlist.status }}
+          <span class="playlist-status">{{ .Params.playlist.status | title }}</span>
+          {{- end }}
+        </div>
+        <h3 class="home-playlist-title">{{ .Title }}</h3>
+        {{- if .Description }}
+        <p class="home-playlist-desc">{{ .Description | plainify | htmlUnescape }}</p>
+        {{- end }}
+        <div class="home-playlist-meta">
+          <span>{{ len $parts }} parts</span>
+          <span class="home-playlist-arrow" aria-hidden="true">&rarr;</span>
+        </div>
+      </a>
+      {{- end }}
+    </div>
+    <div class="home-more reveal">
+      <a class="button shimmer" href="/playlists/" title="All playlists">
+        <span class="button-inner">All Playlists</span>
+      </a>
+    </div>
+    {{- else }}
+    <p class="home-playlist-empty reveal">Playlists are coming soon.</p>
+    {{- end }}
   </section>
 
   <section class="home-section reveal-section">

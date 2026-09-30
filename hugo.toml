@@ -39,8 +39,16 @@ imageHeight = 180
   name = "Linkedin"
   url = "https://www.linkedin.com/in/mohammed-fayasuddin-a7035a23b/"
 
+[params.assets]
+  favicon = "/favicon.svg"
+  favicon16x16 = "/favicon.svg"
+  favicon32x32 = "/favicon.svg"
+  apple_touch_icon = "/favicon.svg"
+  safari_pinned_tab = "/favicon.svg"
+
 [params]
   env = "production"
+  mainSections = ["posts"]
   author = "Fayasuddin"
   DateFormat = "January 2, 2006"
   defaultTheme = "dark"
@@ -84,6 +92,11 @@ imageHeight = 180
   name = "Blog"
   url = "/posts/"
   weight = 2
+
+[[menu.main]]
+  name = "Playlists"
+  url = "/playlists/"
+  weight = 3
 
 [cover]
   image = "https://cdn.pixabay.com/photo/2014/09/02/15/28/styggkarret-433688_960_720.jpg"
