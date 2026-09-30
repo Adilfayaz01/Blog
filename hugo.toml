@@ -1,4 +1,4 @@
-baseURL = 'https://fayasuddin.blog/'
+baseURL = 'https://adilfayaz01.github.io/Blog/'
 languageCode = 'en-us'
 title = 'Mohammed Fayasuddin'
 theme = "PaperMod"
@@ -40,11 +40,11 @@ imageHeight = 180
   url = "https://www.linkedin.com/in/mohammed-fayasuddin-a7035a23b/"
 
 [params.assets]
-  favicon = "/favicon.svg"
-  favicon16x16 = "/favicon.svg"
-  favicon32x32 = "/favicon.svg"
-  apple_touch_icon = "/favicon.svg"
-  safari_pinned_tab = "/favicon.svg"
+  favicon = "favicon.svg"
+  favicon16x16 = "favicon.svg"
+  favicon32x32 = "favicon.svg"
+  apple_touch_icon = "favicon.svg"
+  safari_pinned_tab = "favicon.svg"
 
 [params]
   env = "production"
